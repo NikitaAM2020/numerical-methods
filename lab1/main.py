@@ -3,7 +3,7 @@ import numpy as np
 
 # Означення функції f(t, u)
 def f(t, u):
-    return np.exp(-t ** 2) * np.sin(t) / (2 * np.pi) - 2 * (t - 2) * u
+    return np.exp(-t ** 2) * np.sin(t) / ((2 * np.pi) ** (1 / 2)) - 2 * (t - 2) * u
 
 
 # Означення методу Рунге-Кутта 3-го порядку
@@ -55,7 +55,7 @@ for t, u in zip(t_values, u_values):
     print(f"t = {t:.5f}, u = {u:.10f}")
 
 # Виведення першого та останнього результатів
-print(f"Результат для t = {t_values[0]:.2f}, u = {u_values[0]:.2f}")
+print(f"\nРезультат для t = {t_values[0]:.2f}, u = {u_values[0]:.2f}")
 print(f"Результат для t = {t_values[-1]:.2f}, u = {u_values[-1]:.5e}")
 # Виведення максимального u
 max_u = max(u_values)
