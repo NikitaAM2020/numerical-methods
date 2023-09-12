@@ -60,3 +60,8 @@ print(f"Результат для t = {t_values[-1]:.2f}, u = {u_values[-1]:.5e}
 # Виведення максимального u
 max_u = max(u_values)
 print(f"Максимальне значення u = {max_u:.5f}")
+# Знаходження індексу максимального u
+max_u_index = u_values.index(max_u)
+# Виведення відповідного значення t
+t_max_u = t_values[max_u_index]
+print(f"Значення t для максимального u: t = {t_max_u:.5f}")
