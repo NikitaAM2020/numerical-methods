@@ -34,7 +34,10 @@ def solve_rk3_adaptive(f, t0, u0, t_end, tol):
 
         # Вибір нового кроку на основі оцінки похибки та заданої точності (tol)
         if error < tol:
-            t_values.append(t + h)
+            t_new = t + h
+            if t_new > t_end:
+                t_new = t_end  # Зупинити обчислення, якщо нове значення t виходить за межі t_end
+            t_values.append(t_new)
             u_values.append(u2)
         h = h * min(max(0.1, 0.8 * (tol / error) ** (1 / 3)), 2.0)  # Вибір нового кроку
 
@@ -50,18 +53,25 @@ tolerance = 1e-5
 # Розв'язання задачі Коші
 t_values, u_values = solve_rk3_adaptive(f, t0, u0, t_end, tolerance)
 
-# Виведення результатів
-for t, u in zip(t_values, u_values):
-    print(f"t = {t:.5f}, u = {u:.10f}")
 
-# Виведення першого та останнього результатів
-print(f"\nРезультат для t = {t_values[0]:.2f}, u = {u_values[0]:.2f}")
-print(f"Результат для t = {t_values[-1]:.2f}, u = {u_values[-1]:.5e}")
-# Виведення максимального u
-max_u = max(u_values)
-print(f"Максимальне значення u = {max_u:.5f}")
-# Знаходження індексу максимального u
-max_u_index = u_values.index(max_u)
-# Виведення відповідного значення t
-t_max_u = t_values[max_u_index]
-print(f"Значення t для максимального u: t = {t_max_u:.5f}")
+# Визначення точного розв'язку
+def exact_solution(t):
+    return np.exp(-t ** 2) * np.sin(t)
+
+
+# Виведення результатів та похибки
+print("Час (t) \t Чисельний результат (u) \t Точний результат (u_exact) \t Похибка")
+for t, u in zip(t_values, u_values):
+    u_exact = exact_solution(t)
+    error = abs(u - u_exact)
+    print(f"{t:.3f} \t\t {u:.10f} \t\t\t\t {u_exact:.15f} \t\t\t\t {error:.10f}")
+
+# Максимальна похибка
+max_error = max([abs(u - exact_solution(t)) for t, u in zip(t_values, u_values)])
+print(f"\nМаксимальна похибка: {max_error:.5f}")
+
+# Виведення результату у точці t0 та T
+t0_result = u_values[t_values.index(t0)]
+T_result = u_values[-1]
+print(f"\nРезультат в точці t0 (t = {t0:.1f}): u = {t0_result:.2f}")
+print(f"Результат в точці T (t = {t_end:.1f}): u = {T_result:.5e}")
