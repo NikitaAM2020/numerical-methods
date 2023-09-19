@@ -3,7 +3,7 @@ import numpy as np
 
 # Означення функції f(t, u)
 def f(t, u):
-    return np.exp(-t ** 2) * np.sin(t) / ((2 * np.pi) ** (1 / 2)) - 2 * (t - 2) * u
+    return np.exp(-t ** 2) * np.sin(t) * ((2 * np.pi) ** (1 / 2)) - 2 * (t - 2) * u
 
 
 # Означення методу Рунге-Кутта 3-го порядку
