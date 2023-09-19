@@ -60,11 +60,12 @@ def exact_solution(t):
 
 
 # Виведення результатів та похибки
-print("Час (t) \t Чисельний результат (u) \t Точний результат (u_exact) \t Похибка")
+print(
+    "{:<10} {:<27} {:<28} {:<25}".format("Час (t)", "Чисельний результат (u)", "Точний результат (u_exact)", "Похибка"))
 for t, u in zip(t_values, u_values):
     u_exact = exact_solution(t)
     error = abs(u - u_exact)
-    print(f"{t:.3f} \t\t {u:.10f} \t\t\t\t {u_exact:.15f} \t\t\t\t {error:.10f}")
+    print("{:<10.3f} {:<27.10f} {:<28.15f} {:<25.10f}".format(t, u, u_exact, error))
 
 # Максимальна похибка
 max_error = max([abs(u - exact_solution(t)) for t, u in zip(t_values, u_values)])
