@@ -19,6 +19,7 @@ def solve_rk3_adaptive(f, t0, u0, t_end, tol):
     t_values = [t0]
     u_values = [u0]
     h = 0.1  # Початковий крок
+    iteration = 0
 
     while t_values[-1] < t_end:
         t = t_values[-1]
@@ -40,8 +41,9 @@ def solve_rk3_adaptive(f, t0, u0, t_end, tol):
             t_values.append(t_new)
             u_values.append(u2)
         h = h * min(max(0.1, 0.8 * (tol / error) ** (1 / 3)), 2.0)  # Вибір нового кроку
+        iteration +=1
 
-    return t_values, u_values
+    return t_values, u_values, iteration
 
 
 # Початкові значення
@@ -51,7 +53,7 @@ u0 = 10.0
 tolerance = 1e-5
 
 # Розв'язання задачі Коші
-t_values, u_values = solve_rk3_adaptive(f, t0, u0, t_end, tolerance)
+t_values, u_values, iterations = solve_rk3_adaptive(f, t0, u0, t_end, tolerance)
 
 
 # Визначення точного розв'язку
@@ -61,11 +63,11 @@ def exact_solution(t):
 
 # Виведення результатів та похибки
 print(
-    "{:<10} {:<27} {:<28} {:<25}".format("Час (t)", "Чисельний результат (u)", "Точний результат (u_exact)", "Похибка"))
-for t, u in zip(t_values, u_values):
+    "{:<10} {:<27} {:<28} {:<25}".format("Кількість ітерацій", "Час (t)", "Чисельний результат (u)", "Точний результат (u_exact)", "Похибка"))
+for i, (t, u) in enumerate(zip(t_values, u_values), start=1):
     u_exact = exact_solution(t)
     error = abs(u - u_exact)
-    print("{:<10.3f} {:<27.10f} {:<28.15f} {:<25.10f}".format(t, u, u_exact, error))
+    print("{:<5d} {:<10.3f} {:<27.10f} {:<28.15f} {:<25.10f}".format(i, t, u, u_exact, error))
 
 # Максимальна похибка
 max_error = max([abs(u - exact_solution(t)) for t, u in zip(t_values, u_values)])
